@@ -23,7 +23,7 @@ export class LoginRequest {
      * Simple Wrapper
      * @param {String} username 
      * @param {String} password 
-     * @returns {LoginResponse}
+     * @returns {Promise<LoginResponse>}
      */
     static async createAndSend(username, password) {
         return (new LoginRequest(username, password)).send();

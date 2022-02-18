@@ -20,7 +20,7 @@ export class BuyTicketRequest {
     /**
      * Simple Wrapper
      * @param {Int} petNonce
-     * @returns {BuyTicketResponse}
+     * @returns {Promise<BuyTicketResponse>}
      */
     static async createAndSend(petNonce) {
         return (new BuyTicketRequest(petNonce)).send();
@@ -52,7 +52,7 @@ class BuyTicketResponse {
         return this.prize
     }
 
-    getPrizePicture() {
+    getPicture() {
         return this.prizePicture
     }
 

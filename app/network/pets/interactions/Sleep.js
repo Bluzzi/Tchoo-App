@@ -18,7 +18,7 @@ export class SleepInteractionRequest {
 
     async send() {
         let response = await Adapter.sendRequest(Adapter.END_POINTS.pets.interactions.sleep, await this.serialize(), true);
-        return new SleepInteractionRequest(response)
+        return new SleepInteractionResponse(response)
     }
 
     /**
@@ -26,7 +26,7 @@ export class SleepInteractionRequest {
      * @returns {SleepInteractionResponse}
      */
     static async createAndSend(petNonce, isMorning) {
-        return (new SleepInteractionResponse(petNonce, isMorning)).send();
+        return (new SleepInteractionRequest(petNonce, isMorning)).send();
     }
 }
 

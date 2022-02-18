@@ -15,7 +15,7 @@ export class WashInteractionRequest {
     }
 
     async send() {
-        let response = await Adapter.sendRequest(Adapter.END_POINTS.pets.interactions.pet, this.serialize(), true);
+        let response = await Adapter.sendRequest(Adapter.END_POINTS.pets.interactions.wash, this.serialize(), true);
         return new WashInteractionResponse(response)
     }
 

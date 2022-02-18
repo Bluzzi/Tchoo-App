@@ -1,13 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
-import { Platform } from 'react-native';
+import { Alert, Platform } from 'react-native';
 
 export class Cache {
     static DIRECTORY_MODEL_MTL = "nft_model_mtl"
-    static DIRECTORY_MODEL_OBJ = "nft_model_obj"
+    static DIRECTORY_MODEL_FBX = "nft_model_fbx"
     static DIRECTORY_MODEL_IMAGE_PREVIEW = "nft_model_image_preview"
+    static DIRECTORY_BACKGROUND = "nft_background"
+    static DIRECTORY_ANIMATIONS = "nft_animations"
+    static DIRECTORY_DYNAMIC_ASSETS = "dynamic_assets"
 
     static CACHE_LOGIN_TOKEN = "@login_token"
+    static CACHE_PET_NONCE = "@pet_nonce"
     static CACHE_PET_SLEEPING = "@pet_sleeping"
 
     static nftCacheInfos = (nftNonce) => {
@@ -17,9 +21,9 @@ export class Cache {
                 file: nftNonce + "_mtl.mtl",
             },
 
-            obj: {
-                directory: Cache.DIRECTORY_MODEL_OBJ,
-                file: nftNonce + "_obj.obj",
+            fbx: {
+                directory: Cache.DIRECTORY_MODEL_FBX,
+                file: nftNonce + "_fbx.fbx",
             },
 
             image_preview: {
@@ -39,12 +43,16 @@ export class Cache {
         
         let createDirectoryIfNotExists = async (path) => {
             let directoryOptions = await FileSystem.getInfoAsync(path)
-            if(!directoryOptions.exists) FileSystem.makeDirectoryAsync(path)
+            if(!directoryOptions.exists) await FileSystem.makeDirectoryAsync(path)
         }
+
         return Promise.all([
             createDirectoryIfNotExists(FileSystem.cacheDirectory + this.DIRECTORY_MODEL_MTL),
             createDirectoryIfNotExists(FileSystem.cacheDirectory + this.DIRECTORY_MODEL_IMAGE_PREVIEW),
-            createDirectoryIfNotExists(FileSystem.cacheDirectory + this.DIRECTORY_MODEL_OBJ)
+            createDirectoryIfNotExists(FileSystem.cacheDirectory + this.DIRECTORY_MODEL_FBX),
+            createDirectoryIfNotExists(FileSystem.cacheDirectory + this.DIRECTORY_ANIMATIONS),
+            createDirectoryIfNotExists(FileSystem.cacheDirectory + this.DIRECTORY_DYNAMIC_ASSETS),
+            createDirectoryIfNotExists(FileSystem.cacheDirectory + this.DIRECTORY_BACKGROUND)
         ])
     }
 
@@ -63,7 +71,7 @@ export class Cache {
      * @returns {bool}
      */
      static async isCachedValue(key) {
-        return (await AsyncStorage.getItem(key)) == ""
+        return (await AsyncStorage.getItem(key)) != null && (await AsyncStorage.getItem(key)) != ""
     }
 
     /**

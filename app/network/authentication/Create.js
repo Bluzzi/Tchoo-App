@@ -23,7 +23,7 @@ export class CreateRequest {
      * Simple Wrapper
      * @param {String} username 
      * @param {String} password 
-     * @returns {CreateResponse}
+     * @returns {Promise<CreateResponse>}
      */
     static async createAndSend(username, password) {
         return (new CreateRequest(username, password)).send();

@@ -22,7 +22,7 @@ export class FeedInteractionRequest {
 
     /**
      * Simple Wrapper
-     * @returns {FeedInteractionResponse}
+     * @returns {Promise<FeedInteractionResponse>}
      */
     static async createAndSend(petNonce) {
         return (new FeedInteractionRequest(petNonce)).send();

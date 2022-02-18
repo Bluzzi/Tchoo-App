@@ -21,7 +21,7 @@ export class PetInteractionRequest {
 
     /**
      * Simple Wrapper
-     * @returns {PetInteractionResponse}
+     * @returns {Promise<PetInteractionResponse>}
      */
     static async createAndSend(petNonce) {
         return (new PetInteractionRequest(petNonce)).send();

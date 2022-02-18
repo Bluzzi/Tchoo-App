@@ -15,7 +15,7 @@ export class GetLotteryRequest {
 
     /**
      * Simple Wrapper
-     * @returns {GetLotteryResponse}
+     * @returns {Promise<GetLotteryResponse>}
      */
     static async createAndSend() {
         return (new GetLotteryRequest()).send();
@@ -45,11 +45,12 @@ class GetLotteryResponse {
     }
 }
 
-class LotteryPrize {
+export class LotteryPrize {
     constructor(object) {
         this.prize = object.prize;
         this.picture = object.picture;
         this.percent = object.percent;
+        this.id = object.id;
     }
 
     getPrize() {

@@ -1,3 +1,6 @@
+import { Alert } from "react-native";
+import { Cache } from "../../cache_storage/Cache";
+
 export class Adapter {
     static END_POINTS = {
         account: {
@@ -33,7 +36,7 @@ export class Adapter {
      */
     static async sendRequest(endPoint, data, includeToken = false) {
         if (includeToken) {
-            data["token"] = "TODO"
+            data["token"] = await Cache.getCachedValue(Cache.CACHE_LOGIN_TOKEN)
         }
 
         return fetch('http://45.145.164.115:8080/api/' + endPoint, {

@@ -17,7 +17,7 @@ export class GetOwnedRequest {
 
     /**
      * Simple Wrapper
-     * @returns {GetOwnedResponse}
+     * @returns {Promise<GetOwnedResponse>}
      */
     static async createAndSend() {
         return (new GetOwnedRequest()).send();
@@ -40,6 +40,10 @@ class GetOwnedResponse {
         return this.success
     }
 
+    /**
+     * 
+     * @returns {Int[]}
+     */
     getOwnedNftsNonces() {
         return this.ownedNftsNonces
     }
@@ -48,17 +52,23 @@ class GetOwnedResponse {
      * Get the nft data as objects
      * @returns {NftObject[]}
      */
-    async getNftData() {
+     async getNftData() {
         if(this.ownedNftsData != null) {
             return this.ownedNftsData
         }
 
         let nftsData = []
-        this.ownedNftsNonces.forEach(element => {
-            let nftData = GetPetRequest.createAndSend(element);
-            nftsData.push(nftData);
+        let promiseNftsData = []
+
+        this.ownedNftsNonces.forEach((element) => {
+            promiseNftsData.push(GetPetRequest.createAndSend(element))
         });
 
+        let resolve = await Promise.all(promiseNftsData);
+        resolve.forEach((nftData) => {
+            nftsData.push(nftData);
+        });
+        
         this.ownedNftsData = nftsData;
         return nftsData
     }
