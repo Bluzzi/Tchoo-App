@@ -1,4 +1,3 @@
-import { Alert } from "react-native";
 import { Cache } from "../../cache_storage/Cache";
 
 export class Adapter {

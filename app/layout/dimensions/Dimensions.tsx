@@ -1,4 +1,5 @@
-import { Dimensions } from 'react-native';
+import { Dimensions } from "react-native";
+
 export class AppDimensions {
     static ContentHeight = Dimensions.get("window").height
     static ContentWidth = Dimensions.get("window").width

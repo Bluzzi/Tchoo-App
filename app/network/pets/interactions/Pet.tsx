@@ -1,7 +1,5 @@
-import { getLocalizationAsync } from "expo-localization";
 import { Adapter } from "../../adapter/Adapter";
 import { getErrorTextFromNode } from "../../errors/Errors";
-import { NftObject } from "../NftObject";
 
 export class PetInteractionRequest {
     constructor(petNonce) { 

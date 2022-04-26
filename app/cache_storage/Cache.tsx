@@ -1,6 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as FileSystem from 'expo-file-system';
-import { Alert, Platform } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from "expo-file-system";
+import { Platform } from "react-native";
 
 export class Cache {
     static DIRECTORY_MODEL_MTL = "nft_model_mtl"
