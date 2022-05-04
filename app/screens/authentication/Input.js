@@ -15,11 +15,11 @@ class Input extends Component {
             <View style={{ width: AppDimensions.ContentWidth * 0.9 }}>
                 <TextInput
                     style={{ 
-                        width: '100%', height: AppDimensions.ContentHeight * 0.057, borderRadius: 3,
+                        width: '100%', height: AppDimensions.ContentHeight * 0.057, borderRadius: 6,
                         paddingLeft: '5%',
                         color: 'black',
                         marginBottom: '2.5%', backgroundColor: '#F3EFF6',
-                        fontFamily: 'Roboto-Light', fontSize: AppDimensions.fontToScaleFontSize(15),
+                        fontFamily: 'Roboto-Regular', fontSize: AppDimensions.fontToScaleFontSize(15),
                         borderWidth: this.state.errorText != "" ? 1 : 0,
                         borderColor: '#E33D3D'
                     }}

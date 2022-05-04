@@ -7,7 +7,9 @@ export class GetOwnedRequest {
     constructor() { }
 
     serialize() {
-        return {}
+        return {
+            is_wallet_supplied: false
+        }
     }
 
     async send() {

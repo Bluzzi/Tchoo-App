@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, RefreshControl, FlatList, Image, TouchableOpacity, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaInsetsContext, SafeAreaView } from 'react-native-safe-area-context';
 import { Colours } from '../../../layout/colors/Colours';
 import { AppDimensions } from '../../../layout/dimensions/Dimensions';
 import { ERROR_NODES } from '../../../network/errors/Errors';
@@ -8,6 +8,8 @@ import { GetOwnedRequest } from '../../../network/pets/GetOwned';
 import { Cache } from '../../../cache_storage/Cache';
 import { StackActions } from '@react-navigation/native';
 import { Nodes } from '../../../Navigation';
+import { LogoutRequest } from '../../../network/authentication/Logout';
+import * as Linking from 'expo-linking';
 
 class SelectPet extends Component {
   constructor(props) {
@@ -26,7 +28,7 @@ class SelectPet extends Component {
     GetOwnedRequest.createAndSend().then(async function (getOwnedResponse) {
       if (getOwnedResponse.isSuccess()) {
         if (getOwnedResponse.getOwnedNftsNonces().length > 0) {
-          this.setState({ ownedPets: (await getOwnedResponse.getNftData()), errorCode: -1 })
+          this.setState({ ownedPets: [...(await getOwnedResponse.getNftData()), {moreButton: true}], errorCode: -1 })
         } else {
           this.setState({ errorCode: 1 })
         }
@@ -40,14 +42,43 @@ class SelectPet extends Component {
   
   render() {
     return (
-      <View style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight, backgroundColor: Colours.BACKGROUND }}>
-        <View style={{ width: '100%', height: '30%', backgroundColor: Colours.SECONDARY_BACKGROUND, justifyContent: 'center', alignItems: 'center', paddingTop: '10%' }}>
-          <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(45), fontFamily: 'ReemKufi-Bold', color: Colours.TEXT_IMPORTANT }}>SELECT A PET</Text>
-          <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(20), fontFamily: 'ReemKufi-Bold', color: Colours.TEXT_IMPORTANT_SUB }}>YOU OWN {this.state.ownedPets.length} PET{this.state.ownedPets.length > 1 ? 'S' : ''}</Text>
+      <View style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight, backgroundColor: Colours.BACKGROUND, zIndex: 0 }}>
         
+        <View
+          style={{ 
+            width: '100%', height: '30%', zIndex: 0,
+            backgroundColor: Colours.SECONDARY_BACKGROUND,
+            justifyContent: 'center', alignItems: 'center', paddingTop: '10%', zIndex: 0,
+          }}
+        >
+          <TouchableOpacity 
+            style={{ flexDirection: 'row', alignItems: 'center', zIndex: 1, alignSelf: 'flex-start', marginLeft: '2.5%', marginBottom: '10%' }}
+            onPress={() => {
+              Promise.all([
+                Cache.setCachedValue(Cache.CACHE_LOGIN_TOKEN, ''),
+                LogoutRequest.createAndSend(),
+              ])
+              .then(() => {
+                this.props.navigation.navigate(Nodes.Authentication.LOGIN);
+              });
+            }}
+          >
+            <Image
+              style={{
+                width: AppDimensions.ContentWidth * 0.05,
+                height: AppDimensions.ContentWidth * 0.05,
+                marginRight: '3%'
+              }}
+              source={require("../../../../assets/images/logout.png")}
+            />
+
+            <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(15), fontFamily: 'Roboto-Regular', color: Colours.TEXT_IMPORTANT }}>LOGOUT</Text>
+          </TouchableOpacity>
+          <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(45), fontFamily: 'Roboto-Bold', color: 'white', zIndex: 0 }}>SELECT A PET</Text>
+          <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(20), fontFamily: 'Roboto-Bold', color: 'white', opacity: 0.8, zIndex: 0 }}>YOU OWN {this.state.ownedPets.length - 1 < 0 ? 0 : this.state.ownedPets.length-1} PET{this.state.ownedPets.length - 1 > 1 ? 'S' : ''}</Text>
         </View>
         <ScrollView 
-          style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight * 0.7, backgroundColor: Colours.SECONDARY_BACKGROUND }}
+          style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight * 0.7, backgroundColor: Colours.SECONDARY_BACKGROUND, zIndex: 0 }}
           refreshControl={<RefreshControl
             refreshing={this.state.refreshing}
             onRefresh={this.fetchOwnedPets.bind(this)}
@@ -76,6 +107,23 @@ class SelectPet extends Component {
                     decelerationRate={0}
                     
                     renderItem={(item) => {
+                      if (item.item.moreButton) {
+                        return (
+                          <TouchableOpacity
+                            style={{
+                              marginTop: '15%',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Image
+                              source={require('../../../../assets/images/buy_more.png')}
+                              style={{ width: AppDimensions.ContentWidth * 0.1, height: AppDimensions.ContentWidth * 0.1, marginBottom: '10%' }}
+                            />
+                            <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(20), fontFamily: 'Roboto-Light', color: Colours.TEXT_IMPORTANT }}>BUY ONE MORE</Text>
+                          </TouchableOpacity>
+                        )  
+                      }
+
                       // Cache the picture:
                       Cache.getCachedFileFromUri(item.item.getNonce() + "_picture.png", "", item.item.getTwoDPicture())
                       return (
@@ -126,7 +174,9 @@ class SelectPet extends Component {
 
                         <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(19), fontFamily: 'RedHatDisplay-Regular', paddingHorizontal: '10%', textAlign: 'center' }}>
                           <Text style={{ color: 'white' }}>You don’t have a NFT, buy one </Text>
-                          <Text style={{ color: '#F9A4B5' }} onPress={() => { }}>here</Text>
+                          <Text style={{ color: '#F9A4B5' }} onPress={() => {
+                            Linking.openURL('https://tchoo.pet/connect');
+                          }}>here</Text>
                           <Text style={{ color: 'white' }}> and come back to the application</Text>
                         </Text>
                       </View>
@@ -141,7 +191,9 @@ class SelectPet extends Component {
 
                         <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(19), fontFamily: 'RedHatDisplay-Regular', paddingHorizontal: '10%', textAlign: 'center' }}>
                           <Text style={{ color: 'white' }}>Link your wallet with your account </Text>
-                          <Text style={{ color: '#F9A4B5' }} onPress={() => { }}>here</Text>
+                          <Text style={{ color: '#F9A4B5' }} onPress={() => { 
+                            Linking.openURL('https://tchoo.pet/connect');
+                          }}>here</Text>
                           <Text style={{ color: 'white' }}> and come back to the application</Text>
                         </Text>
                       </View>

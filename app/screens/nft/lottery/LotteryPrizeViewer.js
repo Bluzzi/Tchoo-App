@@ -112,7 +112,7 @@ class LotteryPrizeComponent extends Component {
         super(props);
         this.state = {
             showPercent: false,
-            contentWidth: AppDimensions.ContentWidth * 0.3
+            contentWidth: AppDimensions.ContentWidth * 0.3,
         }
         /**
          * @type {LotteryPrize}
@@ -122,7 +122,7 @@ class LotteryPrizeComponent extends Component {
 
     render() {
         return (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', borderRadius: 10 }}>
                 <TouchableOpacity
                     style={{ height: AppDimensions.ContentWidth * 0.35, alignItems: 'center', justifyContent: 'space-around', zIndex: 0 }}
                     onPress={() => {
@@ -132,7 +132,15 @@ class LotteryPrizeComponent extends Component {
                 >
                     {
                         this.state.showPercent ?
-                            (<View style={{ borderRadius: 10, justifyContent: 'center', alignItems: 'center', position: 'absolute', backgroundColor: '#00000080', flexGrow: 1, width: this.state.contentWidth, height: AppDimensions.ContentWidth * 0.35, zIndex: 1 }}>
+                            (<View 
+                                style={{
+                                    justifyContent: 'center', alignItems: 'center',
+                                    position: 'absolute',
+                                    backgroundColor: '#00000080',
+                                    flexGrow: 1,
+                                    width: this.state.contentWidth, height: this.state.contentWidth, zIndex: 1,
+                                    borderRadius: 10,
+                                }}>
                                 <Text
                                     style={{ fontFamily: 'Roboto-Bold', fontSize: AppDimensions.fontToScaleFontSize(15), color: 'white' }}
                                 >{this.prizeData.getPercent()}%</Text>

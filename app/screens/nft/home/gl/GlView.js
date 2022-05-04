@@ -1,6 +1,6 @@
 import { GLView } from 'expo-gl';
 import React, { Component } from 'react';
-import { View, Text, PanResponder, Platform, Animated } from 'react-native';
+import { View, Text, PanResponder, Platform, Animated, Alert } from 'react-native';
 import ExpoTHREE, { Renderer, THREE } from 'expo-three';
 import {
     AmbientLight,
@@ -66,9 +66,11 @@ class GlView extends Component {
                         },
                     ]
                 }}
+                key={this.count.toString()}
                 source={require('../../../../../assets/images/heart.png')}
             />
         ) - 1;
+        this.count++;
 
         this.setState({
             heartAnimations: this.state.heartAnimations,
@@ -125,11 +127,25 @@ class GlView extends Component {
         this.state = {
             heartAnimations: [],
             heartAnimationsState: [],
+            sleeping: false
         };
 
         this.nftData = props.nftData;
         this.canAddHeart = true;
         this.canPet = true;
+        this.count = 0;
+
+        this.updateInterval = setInterval(() => {
+            Cache.getCachedValue(Cache.CACHE_PET_SLEEPING).then(async (sleep) => {
+                if (this.state.sleeping != (sleep == 'true')) {
+                    this.setState({ sleeping: (sleep == 'true') })
+                }
+            })
+        }, 200);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.updateInterval)
     }
 
     render() {
@@ -140,6 +156,7 @@ class GlView extends Component {
                     style={{ flex: 1 }}
                     onContextCreate={this._glViewContextCreate}
                     {...this.panResponder.panHandlers}
+                    key="view"
                 />,
                 ...this.state.heartAnimations
                 ]}
@@ -159,7 +176,7 @@ class GlView extends Component {
 
         this.scene = new Scene();
 
-        const pointLight = new PointLight(0xffffff, 1.3, 10000, 0);
+        const pointLight = new PointLight(0xffffff, this.state.sleeping ? 0.3 : 1.3, 10000, 0);
         pointLight.position.set(0, 10, 200);
         this.scene.add(pointLight);
 

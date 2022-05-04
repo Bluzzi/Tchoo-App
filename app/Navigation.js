@@ -85,7 +85,12 @@ export class Navigation extends Component {
                         <Stack.Screen name={Nodes.Authentication.LOGIN} component={Login} />
 
                         <Stack.Screen name={Nodes.Pets.SELECT_PET} component={SelectPet} />
-                        <Stack.Screen name={Nodes.Pets.HOME_PET} component={HomePet} />
+                        <Stack.Screen name={Nodes.Pets.HOME_PET} 
+                            component={HomePet}
+                            options={{
+                                gestureEnabled: false
+                            }}
+                        />
                         <Stack.Screen name={Nodes.Pets.LOTTERY}
                             component={Lottery}
                             options={{

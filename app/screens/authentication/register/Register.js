@@ -30,8 +30,8 @@ class Register extends Component {
                 <SafeAreaView style={{ flex: 1, backgroundColor: Colours.BACKGROUND }}>
                     <View style={{ flex: 1 }}>
                         <View style={{ width: '100%', height: '30%', justifyContent: "center", alignItems: 'center' }}>
-                            <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(45), fontFamily: 'ReemKufi-Bold', color: Colours.TEXT_IMPORTANT, padding: '0.5%', }}>TCHOO</Text>
-                            <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(25), fontFamily: 'ReemKufi-Bold', color: Colours.TEXT_IMPORTANT_SUB }}>REGISTER</Text>
+                            <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(45), fontFamily: 'Roboto-Bold', color: 'white', padding: '0.5%', }}>TCHOO</Text>
+                            <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(25), fontFamily: 'Roboto-Bold', color: 'white' }}>REGISTER</Text>
                         </View>
 
                         <View style={{ width: '100%', height: '40%', justifyContent: "space-around", alignItems: 'center' }}>
@@ -66,7 +66,8 @@ class Register extends Component {
                         <View style={{ width: '100%', height: '30%', justifyContent: "center", alignItems: 'center' }}>
                             <TouchableOpacity 
                                 style={{ 
-                                    width: '65%', height: AppDimensions.ContentHeight * 0.07,
+                                    //width: '65%', height: AppDimensions.ContentHeight * 0.07,
+                                    minWidth: AppDimensions.ContentWidth * 0.15, minHeight: AppDimensions.ContentWidth * 0.1,
                                     backgroundColor: Colours.TEXT_IMPORTANT, borderRadius: 4,
                                     justifyContent: 'center', alignItems: 'center', marginBottom: '4%'
                                 }}
@@ -103,7 +104,7 @@ class Register extends Component {
                                     this.state.querying ?
                                     (<ActivityIndicator size="small" color="white" />)
                                     :
-                                    (<Text style={{ fontSize: AppDimensions.fontToScaleFontSize(20), fontFamily: 'Roboto-Bold', color: 'white' }}>REGISTER</Text>)
+                                    (<Text style={{ fontSize: AppDimensions.fontToScaleFontSize(20), fontFamily: 'Roboto-Bold', color: 'white', marginHorizontal: AppDimensions.ContentWidth * 0.08, marginVertical: AppDimensions.ContentWidth * 0.03 }}>REGISTER</Text>)
                                 }
                             </TouchableOpacity>
 
