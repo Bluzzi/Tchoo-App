@@ -1,4 +1,5 @@
 import { Adapter } from "../adapter/Adapter";
+import { getErrorTextFromNode } from "../errors/Errors";
 
 export class GetLotteryRequest {
     constructor() {}

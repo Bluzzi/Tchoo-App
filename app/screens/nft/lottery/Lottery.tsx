@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import { View, Text, StyleSheet, Animated, Image, Easing, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
-import { Colours } from "../../../layout/colors/Colours";
-import { AppDimensions } from "../../../layout/dimensions/Dimensions";
-import { BuyTicketRequest } from "../../../network/lottery/BuyTicket";
-import { GetLotteryRequest, LotteryPrize } from "../../../network/lottery/Get";
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Animated, Image, Easing, Alert, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Colours } from '../../../layout/colors/Colours';
+import { AppDimensions } from '../../../layout/dimensions/Dimensions';
+import { BuyTicketRequest } from '../../../network/lottery/BuyTicket';
+import { GetLotteryRequest, LotteryPrize } from '../../../network/lottery/Get';
+import { Cache } from '../../../cache_storage/Cache';
 
 const BoxSize = AppDimensions.ContentWidth * 0.275
 const Separator = AppDimensions.ContentWidth * 0.1 / 3
@@ -76,7 +77,7 @@ class Lottery extends Component {
             showImage: true,
             revealPrize: false,
             clickable: false,
-            indicationText: ""
+            indicationText: ''
         };
 
         let nftNonce = this.props.route.params.nftNonce;
@@ -169,41 +170,41 @@ class Lottery extends Component {
         this.state.moveAnims.forEach((value, index) => {
             switch (index) {
                 case 0:
-                    this.animateValue(value["x"], -sizeX)
-                    this.animateValue(value["y"], sizeY)
+                    this.animateValue(value['x'], -sizeX)
+                    this.animateValue(value['y'], sizeY)
                     break;
             
                 case 1:
-                    this.animateValue(value["x"], sizeX)
-                    this.animateValue(value["y"], sizeY)
+                    this.animateValue(value['x'], sizeX)
+                    this.animateValue(value['y'], sizeY)
                     break;
 
                 case 2:
-                    this.animateValue(value["x"], -sizeX)
-                    this.animateValue(value["y"], -sizeY)
+                    this.animateValue(value['x'], -sizeX)
+                    this.animateValue(value['y'], -sizeY)
                     break;
 
                 case 3:
-                    this.animateValue(value["x"], sizeX)
-                    this.animateValue(value["y"], -sizeY)
+                    this.animateValue(value['x'], sizeX)
+                    this.animateValue(value['y'], -sizeY)
                     break;
             }
         })
 
         setTimeout(() => {
             this.state.moveAnims.forEach((value, index) => {
-                this.animateValue(value["x"], 0)
-                this.animateValue(value["y"], 0)
+                this.animateValue(value['x'], 0)
+                this.animateValue(value['y'], 0)
             })
 
             setTimeout(() => {
-                this.setState({ clickable: true, indicationText: "PICK A CARD" })
+                this.setState({ clickable: true, indicationText: 'PICK A CARD' })
             }, 1000);
         }, 2500);
     }
 
     pickCard(index) {
-        this.setState({ showImage: false, clickable: false, indicationText: "" })
+        this.setState({ showImage: false, clickable: false, indicationText: '' })
         let toSize = 2;
         let sizeX = AppDimensions.ContentWidth * 0.2;
         sizeX += (AppDimensions.ContentWidth * 0.4) * 0.065
@@ -213,23 +214,23 @@ class Lottery extends Component {
 
         switch (index) {
             case 0:
-                this.animateValue(this.state.moveAnims[0]["x"], -sizeX, 500)
-                this.animateValue(this.state.moveAnims[0]["y"], sizeY, 500)
+                this.animateValue(this.state.moveAnims[0]['x'], -sizeX, 500)
+                this.animateValue(this.state.moveAnims[0]['y'], sizeY, 500)
                 break;
         
             case 1:
-                this.animateValue(this.state.moveAnims[1]["x"], sizeX, 500)
-                this.animateValue(this.state.moveAnims[1]["y"], sizeY, 500)
+                this.animateValue(this.state.moveAnims[1]['x'], sizeX, 500)
+                this.animateValue(this.state.moveAnims[1]['y'], sizeY, 500)
                 break;
 
             case 2:
-                this.animateValue(this.state.moveAnims[2]["x"], -sizeX, 500)
-                this.animateValue(this.state.moveAnims[2]["y"], -sizeY, 500)
+                this.animateValue(this.state.moveAnims[2]['x'], -sizeX, 500)
+                this.animateValue(this.state.moveAnims[2]['y'], -sizeY, 500)
                 break;
 
             case 3:
-                this.animateValue(this.state.moveAnims[3]["x"], sizeX, 500)
-                this.animateValue(this.state.moveAnims[3]["y"], -sizeY, 500)
+                this.animateValue(this.state.moveAnims[3]['x'], sizeX, 500)
+                this.animateValue(this.state.moveAnims[3]['y'], -sizeY, 500)
                 break;
         }
 
@@ -263,7 +264,7 @@ class Lottery extends Component {
                             counter += 10;
                             loopTimeout();
                         } else {
-                            this.setState({ revealPrize: true, showImage: true, indicationText: this.state.prize.prize == "air" ? "You didn"t win anything... Better luck next time!" : "Congratulations you won " + this.state.prize.prize })
+                            this.setState({ revealPrize: true, showImage: true, indicationText: this.state.prize.prize == 'air' ? "You didn't win anything... Better luck next time!" : "Congratulations you won " + this.state.prize.prize })
                         }
                     })
                 })
@@ -282,19 +283,19 @@ class Lottery extends Component {
                     }
                 }}
             >
-                <View style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight, justifyContent: "center", alignItems: "center", backgroundColor: "#00000080" }}>
+                <View style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight, justifyContent: 'center', alignItems: 'center', backgroundColor: '#00000080' }}>
                 <View style={{ 
-                    width: "100%", height: AppDimensions.ContentHeight,
+                    width: '100%', height: AppDimensions.ContentHeight,
                     
-                    justifyContent: "center",
-                    alignItems: "center",
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}>
                     {
                         this.state.loaded ?
                             (
                                 [
                                     (
-                                        <View style={{ width: "100%", flexDirection: "row", justifyContent: "center", zIndex: Math.max(this.state.zIndexes[0], this.state.zIndexes[1]) }}>
+                                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center', zIndex: Math.max(this.state.zIndexes[0], this.state.zIndexes[1]) }}>
                                             <PrizeCard
                                                 prize={this.state.allPrizes[0]} 
                                                 style={{
@@ -303,10 +304,10 @@ class Lottery extends Component {
                                                             rotateY: this.state.flipCard[0]
                                                         },
                                                         {
-                                                            translateX: this.state.moveAnims[0]["x"]
+                                                            translateX: this.state.moveAnims[0]['x']
                                                         },
                                                         {
-                                                            translateY: this.state.moveAnims[0]["y"]
+                                                            translateY: this.state.moveAnims[0]['y']
                                                         },
                                                         {
                                                             scaleX: this.state.size[0]
@@ -331,7 +332,7 @@ class Lottery extends Component {
                                                     })
                                                     this.pickCard(0);
                                                 }}
-                                                key={"1"}
+                                                key={'1'}
                                             />
 
                                             <PrizeCard 
@@ -342,10 +343,10 @@ class Lottery extends Component {
                                                             rotateY: this.state.flipCard[1]
                                                         },
                                                         {
-                                                            translateX: this.state.moveAnims[1]["x"]
+                                                            translateX: this.state.moveAnims[1]['x']
                                                         },
                                                         {
-                                                            translateY: this.state.moveAnims[1]["y"]
+                                                            translateY: this.state.moveAnims[1]['y']
                                                         },
                                                         {
                                                             scaleX: this.state.size[1]
@@ -371,13 +372,13 @@ class Lottery extends Component {
                                                     })
                                                     this.pickCard(1);
                                                 }}
-                                                key={"2"}
+                                                key={'2'}
 
                                             />
                                         </View>
                                     ),
                                     (
-                                        <View style={{ width: "100%", flexDirection: "row", justifyContent: "center", zIndex: Math.max(this.state.zIndexes[2], this.state.zIndexes[3]) }}>
+                                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'center', zIndex: Math.max(this.state.zIndexes[2], this.state.zIndexes[3]) }}>
                                             <PrizeCard 
                                                 prize={this.state.allPrizes[2]} 
                                                 style={{
@@ -386,10 +387,10 @@ class Lottery extends Component {
                                                             rotateY: this.state.flipCard[2]
                                                         },
                                                         {
-                                                            translateX: this.state.moveAnims[2]["x"]
+                                                            translateX: this.state.moveAnims[2]['x']
                                                         },
                                                         {
-                                                            translateY: this.state.moveAnims[2]["y"]
+                                                            translateY: this.state.moveAnims[2]['y']
                                                         },
                                                         {
                                                             scaleX: this.state.size[2]
@@ -415,7 +416,7 @@ class Lottery extends Component {
                                                     this.pickCard(2);
                                                 }}
 
-                                                key={"3"}
+                                                key={'3'}
 
                                             />
 
@@ -427,10 +428,10 @@ class Lottery extends Component {
                                                             rotateY: this.state.flipCard[3]
                                                         },
                                                         {
-                                                            translateX: this.state.moveAnims[3]["x"]
+                                                            translateX: this.state.moveAnims[3]['x']
                                                         },
                                                         {
-                                                            translateY: this.state.moveAnims[3]["y"]
+                                                            translateY: this.state.moveAnims[3]['y']
                                                         },
                                                         {
                                                             scaleX: this.state.size[3]
@@ -456,7 +457,7 @@ class Lottery extends Component {
                                                     this.pickCard(3);
                                                 }}
 
-                                                key={"4"}
+                                                key={'4'}
 
                                             />
                                         </View>
@@ -466,7 +467,7 @@ class Lottery extends Component {
                             :
                             (<View key="vide"/>)
                     }
-                    <Text key="text" style={{ fontSize: AppDimensions.fontToScaleFontSize(20), color: "white", fontFamily: "RedHatDisplay-SemiBold", textAlign: "center" }}>{this.state.indicationText}</Text>
+                    <Text key="text" style={{ fontSize: AppDimensions.fontToScaleFontSize(20), color: 'white', fontFamily: 'RedHatDisplay-SemiBold', textAlign: 'center' }}>{this.state.indicationText}</Text>
                 </View>
             </View>
             </TouchableWithoutFeedback>
@@ -480,14 +481,14 @@ class PrizeCard extends Component {
     }
 
     getPicture(key, picture) {
-        return key == "air" ? require("../../../../assets/images/empty.png") : { uri: picture }
+        return key == 'air' ? require('../../../../assets/images/empty.png') : { uri: picture }
     }
     render() {
         return (
             <Animated.View style={{
                 width: AppDimensions.ContentWidth * 0.4, height: AppDimensions.ContentWidth * 0.6,
-                justifyContent: "space-around",
-                alignItems: "center",
+                justifyContent: 'space-around',
+                alignItems: 'center',
                 shadowColor: "#fff",
                 shadowOffset: {
                     width: 0,
@@ -496,15 +497,15 @@ class PrizeCard extends Component {
                 shadowOpacity: 0.15,
                 shadowRadius: 2.84,
                 elevation: 5,
-                margin: "2.5%",
+                margin: '2.5%',
                 ...this.props.style
             }}>
 
                 <TouchableOpacity
                     style={{
                         width: AppDimensions.ContentWidth * 0.4, height: AppDimensions.ContentWidth * 0.6,
-                        justifyContent: "space-around",
-                        alignItems: "center",
+                        justifyContent: 'space-around',
+                        alignItems: 'center',
                         backgroundColor: this.props.hide ? Colours.SECONDARY_BACKGROUND : Colours.CONTAINER, borderRadius: 10,
                     }}
                     onPress={this.props.onReveal}
@@ -517,10 +518,10 @@ class PrizeCard extends Component {
                             :
                             (<Image
                                 style={{
-                                    width: AppDimensions.ContentWidth * (this.props.prize.prize == "air" ? 0.15 : this.props.wonPrize.prize == "air" && this.props.revealPrize ? 0.15 : 0.35) * (this.props.revealPrize ? 0.8 : 1),
-                                    height: AppDimensions.ContentWidth * (this.props.prize.prize == "air" ? 0.15 : this.props.wonPrize.prize == "air" && this.props.revealPrize ? 0.15 : 0.35) * (this.props.revealPrize ? 0.8 : 1),
+                                    width: AppDimensions.ContentWidth * (this.props.prize.prize == 'air' ? 0.15 : this.props.wonPrize.prize == 'air' && this.props.revealPrize ? 0.15 : 0.35) * (this.props.revealPrize ? 0.8 : 1),
+                                    height: AppDimensions.ContentWidth * (this.props.prize.prize == 'air' ? 0.15 : this.props.wonPrize.prize == 'air' && this.props.revealPrize ? 0.15 : 0.35) * (this.props.revealPrize ? 0.8 : 1),
                                     borderRadius: 10,
-                                    opacity: this.props.prize.prize == "air" ? 0.5 : 0.7
+                                    opacity: this.props.prize.prize == 'air' ? 0.5 : 0.7
                                 }}
                                 source={this.props.revealPrize ? this.getPicture(this.props.wonPrize.prize, this.props.wonPrize.getPicture()) : this.getPicture(this.props.prize.prize, this.props.prize.getPicture())}
                             />)

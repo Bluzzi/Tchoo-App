@@ -1,6 +1,7 @@
 import { Adapter } from "../adapter/Adapter";
 import { getErrorTextFromNode } from "../errors/Errors";
 import { GetPetRequest } from "./Get";
+import { NftObject } from "./NftObject";
 
 export class GetOwnedRequest {
     constructor() { }

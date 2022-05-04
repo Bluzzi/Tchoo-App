@@ -1,3 +1,5 @@
+import { Alert } from "react-native"
+
 const ERROR_NODES_TO_TEXT = {
     "field.empty": "One of the fields is empty.",
     "account.exists": "Account already exists.",

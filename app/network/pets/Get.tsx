@@ -1,4 +1,5 @@
 import { Adapter } from "../adapter/Adapter";
+import { getErrorTextFromNode } from "../errors/Errors";
 import { NftObject } from "./NftObject";
 
 export class GetPetRequest {

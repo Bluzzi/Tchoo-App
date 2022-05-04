@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { View, Text, Animated, Image } from "react-native";
-import { AppDimensions } from "../../layout/dimensions/Dimensions";
+import React, { Component } from 'react';
+import { View, Text, Animated, Image, Alert, Easing } from 'react-native';
+import { AppDimensions } from '../../layout/dimensions/Dimensions';
 
 class Notifications extends Component {
     static Instance;
@@ -8,7 +8,7 @@ class Notifications extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: ""
+            text: ''
         };
 
         Notifications.Instance = this;
@@ -42,7 +42,7 @@ class Notifications extends Component {
 
     playAnimation(notification) {
         this.animationPlaying = true;
-        this.setState({ text: notification["message"] })
+        this.setState({ text: notification['message'] })
         Animated.timing(
             this.notificationValue,
             {
@@ -68,12 +68,12 @@ class Notifications extends Component {
 
     render() {
         return (
-            <View style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight * 0.1, justifyContent: "center", alignItems: "center", position: "absolute"}}>
+            <View style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight * 0.1, justifyContent: 'center', alignItems: 'center', position: 'absolute'}}>
                 <Animated.View
                     style={{
                         width: AppDimensions.ContentWidth * 0.9, height: AppDimensions.ContentHeight * 0.08,
-                        flexDirection: "row", borderRadius: 5,
-                        backgroundColor: "#110f12",
+                        flexDirection: 'row', borderRadius: 5,
+                        backgroundColor: '#110f12',
                         transform: [
                             {
                                 translateY: this.notificationValue
@@ -90,11 +90,11 @@ class Notifications extends Component {
                         elevation: 5,
                     }}
                 >
-                    <View style={{ width: AppDimensions.ContentWidth * 0.15, height: "100%", justifyContent: "center", alignItems: "center" }}>
-                        <Image style={{ width: AppDimensions.ContentWidth * 0.075, height: AppDimensions.ContentWidth * 0.075 }} source={require("../../../assets/images/notification_information.png")}/>
+                    <View style={{ width: AppDimensions.ContentWidth * 0.15, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Image style={{ width: AppDimensions.ContentWidth * 0.075, height: AppDimensions.ContentWidth * 0.075 }} source={require('../../../assets/images/notification_information.png')}/>
                     </View>
-                    <View style={{ width: AppDimensions.ContentWidth * 0.75, height: "100%", justifyContent: "center", paddingVertical: "2%" }}>
-                        <Text style={{ color: "white", fontFamily: "RedHatDisplay-Regular", fontSize: AppDimensions.fontToScaleFontSize(16) }}>
+                    <View style={{ width: AppDimensions.ContentWidth * 0.75, height: '100%', justifyContent: 'center', paddingVertical: '2%' }}>
+                        <Text style={{ color: 'white', fontFamily: 'RedHatDisplay-Regular', fontSize: AppDimensions.fontToScaleFontSize(16) }}>
                             {this.state.text}
                         </Text>
                     </View>

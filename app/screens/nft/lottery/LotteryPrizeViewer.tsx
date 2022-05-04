@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { View, Text, TouchableWithoutFeedback, FlatList, Image, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Colours } from "../../../layout/colors/Colours";
-import { AppDimensions } from "../../../layout/dimensions/Dimensions";
-import { GetLotteryRequest } from "../../../network/lottery/Get";
+import React, { Component } from 'react';
+import { View, Text, TouchableWithoutFeedback, FlatList, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colours } from '../../../layout/colors/Colours';
+import { AppDimensions } from '../../../layout/dimensions/Dimensions';
+import { LotteryPrize, GetLotteryRequest } from '../../../network/lottery/Get';
 
 class LotteryPrizeViewer extends Component {
     constructor(props) {
@@ -25,7 +25,7 @@ class LotteryPrizeViewer extends Component {
         let t = (
             <SafeAreaView style={{ flex: 1, zIndex: 1 }}>
                 <View>
-                    <View style={{ flex: 1, justifyContent: "flex-end", zIndex: 1 }}>
+                    <View style={{ flex: 1, justifyContent: 'flex-end', zIndex: 1 }}>
                         <TouchableWithoutFeedback
                             onPress={() => {
                                 this.props.navigation.goBack();
@@ -42,14 +42,14 @@ class LotteryPrizeViewer extends Component {
 
         return (
 
-            <View style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight, justifyContent: "flex-end", alignItems: "center", backgroundColor: "#00000080" }}>
+            <View style={{ width: AppDimensions.ContentWidth, height: AppDimensions.ContentHeight, justifyContent: 'flex-end', alignItems: 'center', backgroundColor: '#00000080' }}>
                 <TouchableWithoutFeedback
                     onPress={() => {
                         this.props.navigation.goBack();
                     }}
                 >
                     <View
-                        style={{ width: "100%", height: AppDimensions.ContentHeight * 0.65 }}
+                        style={{ width: '100%', height: AppDimensions.ContentHeight * 0.65 }}
                     >
 
                     </View>
@@ -57,10 +57,10 @@ class LotteryPrizeViewer extends Component {
 
                 <View
                     style={{
-                        width: "100%", height: AppDimensions.ContentHeight * 0.3,
-                        paddingHorizontal: "5%", backgroundColor: Colours.CONTAINER_SUB,
-                        justifyContent: "center",
-                        alignItems: "flex-start",
+                        width: '100%', height: AppDimensions.ContentHeight * 0.3,
+                        paddingHorizontal: '5%', backgroundColor: Colours.CONTAINER_SUB,
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
                         borderTopLeftRadius: 5, borderTopRightRadius: 5,
                         shadowColor: Colours.TEXT_IMPORTANT,
                         shadowOffset: {
@@ -73,8 +73,8 @@ class LotteryPrizeViewer extends Component {
                         elevation: 10,
                     }}
                 >
-                    <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(18), color: "white", marginBottom: "5%" }}>TICKET PRICE - {this.state.pricePerTicket} POINTS</Text>
-                    <View style={{ width: "100%", alignItems: "center" }}>
+                    <Text style={{ fontSize: AppDimensions.fontToScaleFontSize(18), color: 'white', marginBottom: '5%' }}>TICKET PRICE - {this.state.pricePerTicket} POINTS</Text>
+                    <View style={{ width: '100%', alignItems: 'center' }}>
                         <FlatList
                             data={this.state.prizes}
                             extraData={this.state.prizes}
@@ -82,7 +82,7 @@ class LotteryPrizeViewer extends Component {
                             keyExtractor={(item) => {
                                 return item.id
                             }}
-                            contentContainerStyle={{ width: AppDimensions.ContentWidth, justifyContent: "center" }}
+                            contentContainerStyle={{ width: AppDimensions.ContentWidth, justifyContent: 'center' }}
                             showsHorizontalScrollIndicator={false}
                             renderItem={(item) => {
                                 return (
@@ -96,7 +96,7 @@ class LotteryPrizeViewer extends Component {
                 </View>
                 <View
                     style={{
-                        width: "100%", height: AppDimensions.ContentHeight * 0.05,
+                        width: '100%', height: AppDimensions.ContentHeight * 0.05,
                         backgroundColor: Colours.CONTAINER_SUB, zIndex: 0
                     }}
                 />
@@ -122,9 +122,9 @@ class LotteryPrizeComponent extends Component {
 
     render() {
         return (
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
-                    style={{ height: AppDimensions.ContentWidth * 0.35, alignItems: "center", justifyContent: "space-around", zIndex: 0 }}
+                    style={{ height: AppDimensions.ContentWidth * 0.35, alignItems: 'center', justifyContent: 'space-around', zIndex: 0 }}
                     onPress={() => {
                         this.setState({ showPercent: !this.state.showPercent })
                     }}
@@ -132,9 +132,9 @@ class LotteryPrizeComponent extends Component {
                 >
                     {
                         this.state.showPercent ?
-                            (<View style={{ borderRadius: 10, justifyContent: "center", alignItems: "center", position: "absolute", backgroundColor: "#00000080", flexGrow: 1, width: this.state.contentWidth, height: AppDimensions.ContentWidth * 0.35, zIndex: 1 }}>
+                            (<View style={{ borderRadius: 10, justifyContent: 'center', alignItems: 'center', position: 'absolute', backgroundColor: '#00000080', flexGrow: 1, width: this.state.contentWidth, height: AppDimensions.ContentWidth * 0.35, zIndex: 1 }}>
                                 <Text
-                                    style={{ fontFamily: "Roboto-Bold", fontSize: AppDimensions.fontToScaleFontSize(15), color: "white" }}
+                                    style={{ fontFamily: 'Roboto-Bold', fontSize: AppDimensions.fontToScaleFontSize(15), color: 'white' }}
                                 >{this.prizeData.getPercent()}%</Text>
                             </View>)
                             :
@@ -142,7 +142,7 @@ class LotteryPrizeComponent extends Component {
                     }
                     <Image style={{ width: AppDimensions.ContentWidth * 0.25, height: AppDimensions.ContentWidth * 0.25 }} source={{ uri: this.prizeData.getPicture() }} />
                     <Text 
-                        style={{ fontFamily: "Roboto-Light", fontSize: AppDimensions.fontToScaleFontSize(15), color: "white" }}
+                        style={{ fontFamily: 'Roboto-Light', fontSize: AppDimensions.fontToScaleFontSize(15), color: 'white' }}
                         onLayout={(e) => {
                             if (e.nativeEvent.layout.width + (e.nativeEvent.layout.width * 0.15) > AppDimensions.ContentWidth * 0.3) {
                                 this.setState({ contentWidth: e.nativeEvent.layout.width + (e.nativeEvent.layout.width * 0.15) })
